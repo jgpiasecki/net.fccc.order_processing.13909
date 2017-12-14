@@ -20,10 +20,13 @@ public class NetFcccOrder_processing13909 {
      */
     public static void main(String[] args) throws IOException{
         
+        //Starts off by telling the user the order list is being processed
         System.out.println("The list of orders is being processed please wait.");
         
+        //calls for the order processor
         OrderProcessor.ReadWrite();
         
+        //Finishes off by telling the user the processor is finished
         System.out.println("The list of oreders has properly been processed and "
                 + "printed out to the 'OrdesProcessed.txt file' ");
     }
