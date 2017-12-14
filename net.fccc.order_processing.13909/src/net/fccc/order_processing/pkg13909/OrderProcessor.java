@@ -11,41 +11,86 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 /**
  *
  * @author jpiasecki
  */
 public class OrderProcessor {
-    public static void ReadOrders() throws IOException 
+        public static void ReadWrite() throws IOException 
     {
         
-        String[] splitLine= new String[4];
-        PrintWriter writeOrders = new PrintWriter(new BufferedWriter(new FileWriter("OrdersProcessed.txt",true)));
+        
+        
 
         try(BufferedReader br = new BufferedReader (new FileReader("Orders.txt")))
-        {
+        {   
+           br.readLine();
+            
             String line = br.readLine();
             
-            while( !line.isEmpty() )
+            
+            try(PrintWriter writeOrders = new PrintWriter(new BufferedWriter(new FileWriter("OrdersProcessed.txt",true))))
             {
-                line.split(line);
+                while( line !=null )
+                {
                 
-                splitLine.equals(line);
-
-                writeOrders.println("Order ID: " +splitLine);                                 
                 
+                
+                    String[] items = line.split("\\|");
+                
+                
+                    String orderID = items[0];
+                    String partNum = items[1];
+                    double price = Double.valueOf(items[2]);
+                    int quantity = Integer.valueOf(items[3]);
+                    double subtotal = price * quantity;
+                    double tax = solveTax();
+                    double shipping = solveShipping();
+                    
+                    writeOrders.println("Order ID: " + orderID);     
+                    writeOrders.println("Part Number: " + partNum);
+                    writeOrders.println("Price: " + price);
+                    writeOrders.println("Quantity: " + quantity);
+                    writeOrders.println("Tax: " + subtotal + tax);
+                    writeOrders.println("Shipping: " + subtotal + shipping);
+                    writeOrders.println("Toatal: " + subtotal + tax + shipping);
+                    br.readLine();
+                }
+            
+            
+            writeOrders.close(); 
             }
-          
+            
+            catch(IOException e)
+            {
+                System.out.println("Error: " +e.getLocalizedMessage());
+            }
+            
+            
         }
-        
+       
         catch(IOException e)
         {
             System.out.println("Error: " + e.getMessage());
         }
         
-        writeOrders.close(); 
+        
         
     }
+    
+    public static double solveTax()
+    {
+        final double TAX_RATE = 0.02;
+        
+        return TAX_RATE;
+    }
+    
+    public static double solveShipping()
+    {
+        final double SHIPPING = 0.05;
+        
+        return SHIPPING;
+    }
+    
 }
